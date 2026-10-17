@@ -1,4 +1,3 @@
-import pandas
 import random
 import re
 import sqlite3
@@ -15,12 +14,23 @@ class Book:
         self.genre = genre
         self.available = available
 
+    def show(self):
+        status = "Yes" if self.available == 1 else "No"
+        print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
+            self.book_id, self.title, self.author, self.genre, status
+        ))
+
 class Member:
     def __init__(self, member_id, name, email, program):
         self.member_id = member_id
         self.name = name
         self.email = email
         self.program = program
+
+    def show(self):
+        print("{:<4} | {:<25} | {:<42} | {:<22}".format(
+            self.member_id, self.name, self.email, self.program
+        ))
 
 def create_tables(connection):
     cursor = connection.cursor()
@@ -150,37 +160,29 @@ def add_member(connection):
 
 
 def show_book_table(rows):
-    books = []
+    if len(rows) == 0:
+        print("No books found.")
+        return
+    print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
+        "ID", "TITLE", "AUTHOR", "GENRE", "AVAILABLE"
+    ))
+    print("-" * 122)
     for row in rows:
         book = Book(row[0], row[1], row[2], row[3], row[4])
-        status = "Yes" if book.available == 1 else "No"
-        books.append({
-            "ID": book.book_id,
-            "Title": book.title,
-            "Author": book.author,
-            "Genre": book.genre,
-            "Available": status,
-        })
-    if len(books) == 0:
-        print("No books found.")
-    else:
-        print(pandas.DataFrame(books).to_string(index=False))
+        book.show()
 
 
 def show_member_table(rows):
-    members = []
+    if len(rows) == 0:
+        print("No members found.")
+        return
+    print("{:<4} | {:<25} | {:<42} | {:<22}".format(
+        "ID", "NAME", "EMAIL", "PROGRAM"
+    ))
+    print("-" * 105)
     for row in rows:
         member = Member(row[0], row[1], row[2], row[3])
-        members.append({
-            "ID": member.member_id,
-            "Name": member.name,
-            "Email": member.email,
-            "Program": member.program,
-        })
-    if len(members) == 0:
-        print("No members found.")
-    else:
-        print(pandas.DataFrame(members).to_string(index=False))
+        member.show()
 
 
 def display_books(connection):
@@ -197,20 +199,16 @@ def display_members(connection):
 
 def display_borrowings(connection):
     print("\nBORROWINGS")
+    print("{:<4} | {:<9} | {:<10} | {:<10}".format(
+        "ID", "BOOK ID", "MEMBER ID", "STATUS"
+    ))
+    print("-" * 43)
     rows = connection.execute("SELECT borrowing_id, book_id, member_id, returned FROM borrowings").fetchall()
-    records = []
     for row in rows:
         status = "Returned" if row[3] == 1 else "Borrowed"
-        records.append({
-            "Borrowing ID": row[0],
-            "Book ID": row[1],
-            "Member ID": row[2],
-            "Status": status,
-        })
-    if len(records) == 0:
+        print("{:<4} | {:<9} | {:<10} | {:<10}".format(row[0], row[1], row[2], status))
+    if len(rows) == 0:
         print("No borrowing records found.")
-    else:
-        print(pandas.DataFrame(records).to_string(index=False))
 
 
 def display_records(connection):
