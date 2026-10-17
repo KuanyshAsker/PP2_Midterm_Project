@@ -1,21 +1,12 @@
-"""A simple library system using Python classes, functions, and SQLite."""
-
 import random
 import re
 import sqlite3
-from datetime import date, timedelta
-from pathlib import Path
 
-
-DATABASE = Path(__file__).with_name("project.db")
-RESULTS = Path(__file__).with_name("results.txt")
-EMAIL_PATTERN = r"^[\w.-]+@[\w.-]+\.\w+$"
-SAMPLE_DAY = date(2026, 10, 17)
+DATABASE = "project.db"
+RESULTS = "results.txt"
 
 
 class Book:
-    """One book in the catalog."""
-
     def __init__(self, book_id, title, author, genre, available):
         self.book_id = book_id
         self.title = title
@@ -23,60 +14,34 @@ class Book:
         self.genre = genre
         self.available = available
 
-    def __str__(self):
-        status = "Yes" if self.available else "No"
-        return f"{self.book_id:<4} {self.title:<37} {self.author:<28} {self.genre:<18} {status}"
+    def show(self):
+        status = "Yes" if self.available == 1 else "No"
+        print(str(self.book_id) + " | " + self.title + " | " + self.author + " | " + self.genre + " | Available: " + status)
 
 
 class Member:
-    """One library member."""
-
     def __init__(self, member_id, name, email, program):
         self.member_id = member_id
         self.name = name
         self.email = email
         self.program = program
 
-    def __str__(self):
-        return f"{self.member_id:<4} {self.name:<25} {self.email:<38} {self.program}"
-
-
-def connect_database():
-    connection = sqlite3.connect(DATABASE)
-    connection.execute("PRAGMA foreign_keys = ON")
-    return connection
+    def show(self):
+        print(str(self.member_id) + " | " + self.name + " | " + self.email + " | " + self.program)
 
 
 def create_tables(connection):
-    connection.executescript("""
-        CREATE TABLE IF NOT EXISTS books (
-            book_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            author TEXT NOT NULL,
-            genre TEXT NOT NULL,
-            available INTEGER NOT NULL DEFAULT 1
-        );
-        CREATE TABLE IF NOT EXISTS members (
-            member_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL UNIQUE,
-            program TEXT NOT NULL
-        );
-        CREATE TABLE IF NOT EXISTS borrowings (
-            borrowing_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            book_id INTEGER NOT NULL REFERENCES books(book_id) ON DELETE CASCADE,
-            member_id INTEGER NOT NULL REFERENCES members(member_id) ON DELETE CASCADE,
-            borrowed_on TEXT NOT NULL,
-            due_on TEXT NOT NULL,
-            returned_on TEXT
-        );
-    """)
+    cursor = connection.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS books (book_id INTEGER PRIMARY KEY, title TEXT, author TEXT, genre TEXT, available INTEGER)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS members (member_id INTEGER PRIMARY KEY, name TEXT, email TEXT UNIQUE, program TEXT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS borrowings (borrowing_id INTEGER PRIMARY KEY, book_id INTEGER, member_id INTEGER, returned INTEGER, FOREIGN KEY(book_id) REFERENCES books(book_id), FOREIGN KEY(member_id) REFERENCES members(member_id))")
     connection.commit()
 
 
 def add_sample_data(connection):
-    """Load a small, repeatable university library dataset once."""
-    if connection.execute("SELECT COUNT(*) FROM books").fetchone()[0] > 0:
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM books")
+    if cursor.fetchone()[0] > 0:
         return
 
     books = [
@@ -131,8 +96,7 @@ def add_sample_data(connection):
         ("The Art of War", "Sun Tzu", "History"),
         ("Man's Search for Meaning", "Viktor E. Frankl", "Memoir"),
     ]
-
-    member_names = [
+    names = [
         "Aibek Sarsenov", "Aida Nurgaliyeva", "Alikhan Tolegen", "Amina Zhaksylyk", "Aruzhan Kassen",
         "Asel Mukan", "Askar Bekturov", "Ayan Zhumabay", "Bakyt Ermek", "Danel Akhmet",
         "Diana Abilova", "Dias Kairat", "Dinara Saparova", "Eldar Bek", "Elmira Kazybek",
@@ -149,293 +113,211 @@ def add_sample_data(connection):
     programs = ["Computer Science", "Mathematics", "Engineering", "Economics", "Languages"]
 
     for title, author, genre in books:
-        connection.execute(
-            "INSERT INTO books(title, author, genre) VALUES (?, ?, ?)",
-            (title, author, genre),
-        )
+        cursor.execute("INSERT INTO books (title, author, genre, available) VALUES (?, ?, ?, 1)", (title, author, genre))
 
-    for i, name in enumerate(member_names):
-        email = "student" + str(i + 1).zfill(3) + "@students.example.edu"
+    for i in range(len(names)):
+        email = names[i].lower().replace(" ", ".") + "@students.example.edu"
         program = programs[i % len(programs)]
-        connection.execute(
-            "INSERT INTO members(name, email, program) VALUES (?, ?, ?)",
-            (name, email, program),
-        )
+        cursor.execute("INSERT INTO members (name, email, program) VALUES (?, ?, ?)", (names[i], email, program))
 
-    book_ids = [row[0] for row in connection.execute("SELECT book_id FROM books ORDER BY book_id")]
-    member_ids = [row[0] for row in connection.execute("SELECT member_id FROM members ORDER BY member_id")]
     loan_counts = [14, 11, 9, 8, 6, 5, 4, 4, 3, 3, 3] + [2] * 10 + [1] * 10
-    random.seed(17)
-    for book_index, count in enumerate(loan_counts):
-        book_id = book_ids[book_index]
-        for copy_number in range(count):
-            is_current_loan = copy_number == count - 1 and book_index < 25
-            member_id = random.choice(member_ids)
-            if is_current_loan:
-                borrowed_on = SAMPLE_DAY - timedelta(days=random.randint(1, 12))
-                returned_on = None
-            else:
-                borrowed_on = SAMPLE_DAY - timedelta(days=random.randint(20, 180))
-                returned_on = borrowed_on + timedelta(days=random.randint(2, 14))
-            due_on = borrowed_on + timedelta(days=14)
-            connection.execute(
-                """INSERT INTO borrowings(book_id, member_id, borrowed_on, due_on, returned_on)
-                   VALUES (?, ?, ?, ?, ?)""",
-                (book_id, member_id, borrowed_on.isoformat(), due_on.isoformat(),
-                 returned_on.isoformat() if returned_on else None),
-            )
-        if book_index < 25:
-            connection.execute("UPDATE books SET available=0 WHERE book_id=?", (book_id,))
-
+    for book_number in range(len(loan_counts)):
+        book_id = book_number + 1
+        for copy_number in range(loan_counts[book_number]):
+            member_id = random.randint(1, len(names))
+            returned = 1
+            if book_number < 25 and copy_number == loan_counts[book_number] - 1:
+                returned = 0
+                cursor.execute("UPDATE books SET available=0 WHERE book_id=?", (book_id,))
+            cursor.execute("INSERT INTO borrowings (book_id, member_id, returned) VALUES (?, ?, ?)", (book_id, member_id, returned))
     connection.commit()
 
 
-def get_number(message):
-    try:
-        return int(input(message))
-    except ValueError:
-        print("Please enter a number.")
-        return None
-
-
 def add_book(connection):
-    title = input("Book title: ").strip()
-    author = input("Author: ").strip()
-    genre = input("Genre: ").strip()
+    title = input("Book title: ")
+    author = input("Author: ")
+    genre = input("Genre: ")
     if title == "" or author == "" or genre == "":
-        print("Title, author, and genre are required.")
+        print("Please fill in all book details.")
         return
-    connection.execute(
-        "INSERT INTO books(title, author, genre) VALUES (?, ?, ?)",
-        (title, author, genre),
-    )
+    connection.execute("INSERT INTO books (title, author, genre, available) VALUES (?, ?, ?, 1)", (title, author, genre))
     connection.commit()
     print("Book added.")
 
 
 def add_member(connection):
-    name = input("Member name: ").strip()
-    email = input("Member email: ").strip()
-    program = input("Study program: ").strip()
-    if name == "" or program == "" or re.fullmatch(EMAIL_PATTERN, email) is None:
-        print("Enter a name, study program, and valid email address.")
+    name = input("Member name: ")
+    email = input("Member email: ")
+    program = input("Study program: ")
+    if name == "" or program == "" or re.match(r"^[\w.-]+@[\w.-]+\.\w+$", email) is None:
+        print("Enter a name, study program, and valid email.")
         return
-    try:
-        connection.execute(
-            "INSERT INTO members(name, email, program) VALUES (?, ?, ?)",
-            (name, email, program),
-        )
-        connection.commit()
-        print("Member added.")
-    except sqlite3.IntegrityError:
+    existing = connection.execute("SELECT member_id FROM members WHERE email=?", (email,)).fetchone()
+    if existing is not None:
         print("That email is already registered.")
+        return
+    connection.execute("INSERT INTO members (name, email, program) VALUES (?, ?, ?)", (name, email, program))
+    connection.commit()
+    print("Member added.")
 
 
-def show_books(connection, available_only=False):
-    if available_only:
-        rows = connection.execute(
-            "SELECT book_id, title, author, genre, available FROM books WHERE available=1 ORDER BY title"
-        )
-    else:
-        rows = connection.execute(
-            "SELECT book_id, title, author, genre, available FROM books ORDER BY title"
-        )
-    print(f"{'ID':<4} {'TITLE':<37} {'AUTHOR':<28} {'GENRE':<18} AVAILABLE")
+def display_books(connection):
+    rows = connection.execute("SELECT book_id, title, author, genre, available FROM books")
     for row in rows:
-        print(Book(row[0], row[1], row[2], row[3], row[4]))
+        book = Book(row[0], row[1], row[2], row[3], row[4])
+        book.show()
 
 
-def show_members(connection):
-    rows = connection.execute("SELECT member_id, name, email, program FROM members ORDER BY name")
-    print(f"{'ID':<4} {'NAME':<25} {'EMAIL':<38} PROGRAM")
+def display_members(connection):
+    rows = connection.execute("SELECT member_id, name, email, program FROM members")
     for row in rows:
-        print(Member(row[0], row[1], row[2], row[3]))
+        member = Member(row[0], row[1], row[2], row[3])
+        member.show()
 
 
-def show_borrowings(connection):
-    rows = connection.execute("""
-        SELECT borrowings.borrowing_id, books.title, members.name,
-               borrowings.borrowed_on, borrowings.due_on, borrowings.returned_on
-        FROM borrowings JOIN books ON borrowings.book_id=books.book_id
-        JOIN members ON borrowings.member_id=members.member_id
-        ORDER BY borrowings.borrowed_on DESC
-    """)
-    print("ID  | BOOK | MEMBER | BORROWED | DUE | RETURNED")
+def display_borrowings(connection):
+    rows = connection.execute("SELECT borrowing_id, book_id, member_id, returned FROM borrowings")
     for row in rows:
-        returned = row[5] if row[5] else "Not returned"
-        print(f"{row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} | {returned}")
+        status = "Returned" if row[3] == 1 else "Borrowed"
+        print(str(row[0]) + " | Book ID: " + str(row[1]) + " | Member ID: " + str(row[2]) + " | " + status)
 
 
 def display_records(connection):
-    choice = input("Display (b)ooks, (m)embers, or bo(r)rowings? ").strip().lower()
-    if choice == "b":
-        show_books(connection)
-    elif choice == "m":
-        show_members(connection)
-    elif choice == "r":
-        show_borrowings(connection)
+    print("1. Books")
+    print("2. Members")
+    print("3. Borrowings")
+    choice = input("Choose records to display: ")
+    if choice == "1":
+        display_books(connection)
+    elif choice == "2":
+        display_members(connection)
+    elif choice == "3":
+        display_borrowings(connection)
     else:
-        print("Choose b, m, or r.")
+        print("Invalid choice.")
+
+
+def search_records(connection):
+    print("1. Search book by title")
+    print("2. Search member by name or ID")
+    choice = input("Choose search: ")
+    if choice == "1":
+        title = input("Enter part of the title: ")
+        rows = connection.execute("SELECT book_id, title, author, genre, available FROM books WHERE title LIKE ?", ("%" + title + "%",))
+        found = False
+        for row in rows:
+            Book(row[0], row[1], row[2], row[3], row[4]).show()
+            found = True
+        if found == False:
+            print("No books found.")
+    elif choice == "2":
+        name = input("Enter a name or member ID: ")
+        rows = connection.execute("SELECT member_id, name, email, program FROM members WHERE name LIKE ? OR member_id=?", ("%" + name + "%", name))
+        found = False
+        for row in rows:
+            Member(row[0], row[1], row[2], row[3]).show()
+            found = True
+        if found == False:
+            print("No members found.")
+    else:
+        print("Invalid choice.")
 
 
 def borrow_book(connection):
-    book_id = get_number("Book ID: ")
-    member_id = get_number("Member ID: ")
-    if book_id is None or member_id is None:
+    book_id = input("Book ID: ")
+    member_id = input("Member ID: ")
+    if not book_id.isdigit() or not member_id.isdigit():
+        print("Please enter numbers for the IDs.")
         return
     book = connection.execute("SELECT available FROM books WHERE book_id=?", (book_id,)).fetchone()
     member = connection.execute("SELECT member_id FROM members WHERE member_id=?", (member_id,)).fetchone()
     if book is None or member is None:
-        print("Book or member was not found.")
+        print("Book or member not found.")
     elif book[0] == 0:
         print("That book is already borrowed.")
     else:
-        borrowed_on = date.today()
-        due_on = borrowed_on + timedelta(days=14)
-        connection.execute(
-            "INSERT INTO borrowings(book_id, member_id, borrowed_on, due_on) VALUES (?, ?, ?, ?)",
-            (book_id, member_id, borrowed_on.isoformat(), due_on.isoformat()),
-        )
+        connection.execute("INSERT INTO borrowings (book_id, member_id, returned) VALUES (?, ?, 0)", (book_id, member_id))
         connection.execute("UPDATE books SET available=0 WHERE book_id=?", (book_id,))
         connection.commit()
-        print("Borrowing saved. Due date:", due_on.isoformat())
-
-
-def search_records(connection):
-    choice = input("Search (b)ooks or (m)embers? ").strip().lower()
-    if choice == "b":
-        title = input("Book title contains: ").strip()
-        rows = connection.execute(
-            "SELECT book_id, title, author, genre, available FROM books WHERE title LIKE ? ORDER BY title",
-            ("%" + title + "%",),
-        )
-        found = False
-        for row in rows:
-            print(Book(row[0], row[1], row[2], row[3], row[4]))
-            found = True
-        if not found:
-            print("No books found.")
-    elif choice == "m":
-        search = input("Member name or ID: ").strip()
-        rows = connection.execute(
-            "SELECT member_id, name, email, program FROM members WHERE name LIKE ? OR CAST(member_id AS TEXT)=?",
-            ("%" + search + "%", search),
-        )
-        found = False
-        for row in rows:
-            print(Member(row[0], row[1], row[2], row[3]))
-            found = True
-        if not found:
-            print("No members found.")
-    else:
-        print("Choose b or m.")
-
-
-def update_book(connection):
-    book_id = get_number("Book ID to update: ")
-    if book_id is None:
-        return
-    title = input("New title: ").strip()
-    author = input("New author: ").strip()
-    genre = input("New genre: ").strip()
-    if title == "" or author == "" or genre == "":
-        print("Title, author, and genre are required.")
-        return
-    cursor = connection.execute(
-        "UPDATE books SET title=?, author=?, genre=? WHERE book_id=?",
-        (title, author, genre, book_id),
-    )
-    connection.commit()
-    print("Book updated." if cursor.rowcount else "Book not found.")
-
-
-def delete_record(connection):
-    choice = input("Delete a (b)ook or (c)ancel a borrowing? ").strip().lower()
-    record_id = get_number("ID: ")
-    if record_id is None:
-        return
-    if choice == "b":
-        cursor = connection.execute("DELETE FROM books WHERE book_id=?", (record_id,))
-        connection.commit()
-        print("Book deleted." if cursor.rowcount else "Book not found.")
-    elif choice == "c":
-        row = connection.execute(
-            "SELECT book_id, returned_on FROM borrowings WHERE borrowing_id=?", (record_id,)
-        ).fetchone()
-        if row is None:
-            print("Borrowing not found.")
-        else:
-            connection.execute("DELETE FROM borrowings WHERE borrowing_id=?", (record_id,))
-            if row[1] is None:
-                connection.execute("UPDATE books SET available=1 WHERE book_id=?", (row[0],))
-            connection.commit()
-            print("Borrowing cancelled.")
-    else:
-        print("Choose b or c.")
+        print("Borrowing saved.")
 
 
 def return_book(connection):
-    borrowing_id = get_number("Borrowing ID to return: ")
-    if borrowing_id is None:
+    borrowing_id = input("Borrowing ID to return: ")
+    if not borrowing_id.isdigit():
+        print("Please enter a number.")
         return
-    row = connection.execute(
-        "SELECT book_id, returned_on FROM borrowings WHERE borrowing_id=?", (borrowing_id,)
-    ).fetchone()
+    row = connection.execute("SELECT book_id, returned FROM borrowings WHERE borrowing_id=?", (borrowing_id,)).fetchone()
     if row is None:
         print("Borrowing not found.")
-    elif row[1] is not None:
-        print("This book has already been returned.")
+    elif row[1] == 1:
+        print("This book was already returned.")
     else:
-        connection.execute(
-            "UPDATE borrowings SET returned_on=? WHERE borrowing_id=?",
-            (date.today().isoformat(), borrowing_id),
-        )
+        connection.execute("UPDATE borrowings SET returned=1 WHERE borrowing_id=?", (borrowing_id,))
         connection.execute("UPDATE books SET available=1 WHERE book_id=?", (row[0],))
         connection.commit()
         print("Book returned.")
 
 
+def update_book(connection):
+    book_id = input("Book ID to update: ")
+    title = input("New title: ")
+    author = input("New author: ")
+    if not book_id.isdigit() or title == "" or author == "":
+        print("Enter a number and fill in the title and author.")
+        return
+    cursor = connection.execute("UPDATE books SET title=?, author=? WHERE book_id=?", (title, author, book_id))
+    connection.commit()
+    if cursor.rowcount == 0:
+        print("Book not found.")
+    else:
+        print("Book updated.")
+
+
+def delete_record(connection):
+    borrowing_id = input("Borrowing ID to cancel: ")
+    if not borrowing_id.isdigit():
+        print("Please enter a number.")
+        return
+    row = connection.execute("SELECT book_id, returned FROM borrowings WHERE borrowing_id=?", (borrowing_id,)).fetchone()
+    if row is None:
+        print("Borrowing not found.")
+    else:
+        connection.execute("DELETE FROM borrowings WHERE borrowing_id=?", (borrowing_id,))
+        if row[1] == 0:
+            connection.execute("UPDATE books SET available=1 WHERE book_id=?", (row[0],))
+        connection.commit()
+        print("Borrowing cancelled.")
+
+
 def show_statistics(connection):
     total = connection.execute("SELECT COUNT(*) FROM borrowings").fetchone()[0]
-    active = connection.execute("SELECT COUNT(*) FROM borrowings WHERE returned_on IS NULL").fetchone()[0]
-    top_book = connection.execute("""
-        SELECT books.title, COUNT(*) AS total
-        FROM borrowings JOIN books ON borrowings.book_id=books.book_id
-        GROUP BY books.book_id ORDER BY total DESC, books.title LIMIT 1
-    """).fetchone()
+    current = connection.execute("SELECT COUNT(*) FROM borrowings WHERE returned=0").fetchone()[0]
+    top_book = connection.execute("SELECT book_id, COUNT(*) FROM borrowings GROUP BY book_id ORDER BY COUNT(*) DESC LIMIT 1").fetchone()
     print("Total borrowing records:", total)
-    print("Books currently borrowed:", active)
-    if top_book:
-        print("Most borrowed book:", top_book[0], "-", top_book[1], "times")
+    print("Books currently borrowed:", current)
+    if top_book is not None:
+        title = connection.execute("SELECT title FROM books WHERE book_id=?", (top_book[0],)).fetchone()
+        print("Most frequently borrowed book:", title[0], "-", top_book[1], "loans")
 
 
 def export_results(connection):
-    total = connection.execute("SELECT COUNT(*) FROM borrowings").fetchone()[0]
-    active = connection.execute("SELECT COUNT(*) FROM borrowings WHERE returned_on IS NULL").fetchone()[0]
-    top_book = connection.execute("""
-        SELECT books.title, COUNT(*) AS total
-        FROM borrowings JOIN books ON borrowings.book_id=books.book_id
-        GROUP BY books.book_id ORDER BY total DESC, books.title LIMIT 1
-    """).fetchone()
-    with open(RESULTS, "w", encoding="utf-8") as file:
+    with open(RESULTS, "w") as file:
+        total = connection.execute("SELECT COUNT(*) FROM borrowings").fetchone()[0]
+        current = connection.execute("SELECT COUNT(*) FROM borrowings WHERE returned=0").fetchone()[0]
+        top_book = connection.execute("SELECT book_id, COUNT(*) FROM borrowings GROUP BY book_id ORDER BY COUNT(*) DESC LIMIT 1").fetchone()
         file.write("UNIVERSITY LIBRARY SUMMARY\n")
         file.write("Books: " + str(connection.execute("SELECT COUNT(*) FROM books").fetchone()[0]) + "\n")
         file.write("Members: " + str(connection.execute("SELECT COUNT(*) FROM members").fetchone()[0]) + "\n")
         file.write("Borrowing records: " + str(total) + "\n")
-        file.write("Current loans: " + str(active) + "\n")
-        if top_book:
-            file.write("Most borrowed book: " + top_book[0] + " (" + str(top_book[1]) + " loans)\n")
-        file.write("\nBORROWING HISTORY\n")
-        rows = connection.execute("""
-            SELECT borrowings.borrowing_id, books.title, members.name,
-                   borrowings.borrowed_on, borrowings.due_on, borrowings.returned_on
-            FROM borrowings JOIN books ON borrowings.book_id=books.book_id
-            JOIN members ON borrowings.member_id=members.member_id
-            ORDER BY borrowings.borrowed_on DESC
-        """)
+        file.write("Books currently borrowed: " + str(current) + "\n")
+        if top_book is not None:
+            title = connection.execute("SELECT title FROM books WHERE book_id=?", (top_book[0],)).fetchone()
+            file.write("Most frequently borrowed book: " + title[0] + " (" + str(top_book[1]) + " loans)\n")
+        file.write("\nBORROWING RECORDS\n")
+        rows = connection.execute("SELECT borrowing_id, book_id, member_id, returned FROM borrowings")
         for row in rows:
-            returned = row[5] if row[5] else "Not returned"
-            file.write(f"{row[0]} | {row[1]} | {row[2]} | {row[3]} | due {row[4]} | {returned}\n")
+            file.write(str(row[0]) + " | Book " + str(row[1]) + " | Member " + str(row[2]) + " | Returned: " + str(row[3]) + "\n")
     print("Results saved to results.txt.")
 
 
@@ -445,27 +327,26 @@ UNIVERSITY LIBRARY SYSTEM
 1. Add a book
 2. Add a member
 3. Borrow a book
-4. Display books, members, or borrowings
+4. Display records
 5. Search books or members
-6. Show available books
-7. Update a book
-8. Delete a book or cancel a borrowing
-9. Return a book
-10. Show statistics
-11. Export results.txt
+6. Update a book
+7. Cancel a borrowing
+8. Return a book
+9. Show statistics
+10. Export results.txt
 0. Exit
 """)
 
 
 def main():
-    connection = connect_database()
+    connection = sqlite3.connect(DATABASE)
+    connection.execute("PRAGMA foreign_keys = ON")
     create_tables(connection)
     add_sample_data(connection)
-    print("Library dataset ready: 50 books, 60 members, and 100 borrowing records.")
-
+    print("Library ready: 50 books, 60 members, and 100 borrowing records.")
     while True:
         show_menu()
-        choice = input("Choose an option: ").strip()
+        choice = input("Choose an option: ")
         if choice == "1":
             add_book(connection)
         elif choice == "2":
@@ -477,25 +358,21 @@ def main():
         elif choice == "5":
             search_records(connection)
         elif choice == "6":
-            show_books(connection, available_only=True)
-        elif choice == "7":
             update_book(connection)
-        elif choice == "8":
+        elif choice == "7":
             delete_record(connection)
-        elif choice == "9":
+        elif choice == "8":
             return_book(connection)
-        elif choice == "10":
+        elif choice == "9":
             show_statistics(connection)
-        elif choice == "11":
+        elif choice == "10":
             export_results(connection)
         elif choice == "0":
             print("Goodbye.")
             break
         else:
             print("Choose a number from the menu.")
-
     connection.close()
 
 
-if __name__ == "__main__":
-    main()
+main()

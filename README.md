@@ -1,6 +1,6 @@
 # Library Management System
 
-A simple console project using Python basics, functions, loops, classes, text files, regular expressions, `random`, and SQLite.
+A simple console project using the Python concepts from the six lectures: variables, conditions, loops, functions, classes, text files, regular expressions, `random`, and SQLite.
 
 ## Run
 
@@ -10,7 +10,7 @@ Use Python 3.10 or newer:
 python3 main.py
 ```
 
-The app creates `project.db` and adds a demo dataset on first run: 50 books, 60 members, and 100 borrowing records. The sample history includes 25 active loans and repeated borrowing of popular books. Choose a menu option to add, display, search, update, or delete records, view basic statistics, and save `results.txt`.
+The app creates `project.db` and adds a demo dataset on first run: 50 books, 60 members, and 100 borrowing records. The sample history includes 25 active loans and repeated borrowing of popular books. The code uses simple functions, loops, and SQL statements. Choose a menu option to add, display, search, update, or cancel records, view basic statistics, and save `results.txt`.
 
 ## Course concepts
 
@@ -18,7 +18,7 @@ The app creates `project.db` and adds a demo dataset on first run: 50 books, 60 
 - Functions and a `while` loop run the menu and database actions.
 - SQLite stores books, members, and borrowings in three related tables.
 - Regular expressions check member email addresses.
-- `random` selects demo books and members for borrowing records.
+- `random` selects demo members for borrowing records.
 - Export uses basic text-file writing.
 
 ## Files
