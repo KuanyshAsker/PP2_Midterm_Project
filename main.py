@@ -114,7 +114,7 @@ def add_sample_data(connection):
         cursor.execute("INSERT INTO books (title, author, genre, available) VALUES (?, ?, ?, 1)", (title, author, genre))
 
     for i in range(len(names)):
-        email = names[i].lower().replace(" ", ".") + "@students.example.edu"
+        email = names[i].lower().replace(" ", ".") + "@kbtu.kz"
         program = programs[i % len(programs)]
         cursor.execute("INSERT INTO members (name, email, program) VALUES (?, ?, ?)", (names[i], email, program))
 
