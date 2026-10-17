@@ -1,0 +1,38 @@
+LIBRARY MANAGEMENT SYSTEM
+Books: 50
+Members: 30
+Borrowing records: 30
+Books currently borrowed: 20
+Most borrowed book: A Long Journey 1 (1)
+
+BORROWINGS
+1 | A Long Journey 4 | Amina Brown | Returned
+2 | Simple Machines 1 | Daniel Patel | Borrowed
+3 | A World of Stories 4 | Ethan Smith | Borrowed
+4 | A Long Journey 2 | Maya Sato | Returned
+5 | The Green Garden 1 | Daniel Patel | Borrowed
+6 | Python Basics 1 | Maya Sato | Borrowed
+7 | Number Patterns 1 | Noah Kim | Returned
+8 | The Green Garden 5 | Sara Chen | Borrowed
+9 | Ocean Life 4 | Ethan Smith | Borrowed
+10 | Python Basics 4 | Sara Chen | Returned
+11 | Space and Stars 3 | Arman Jones | Borrowed
+12 | Python Basics 3 | Timur Ali | Borrowed
+13 | A World of Stories 1 | Ethan Smith | Returned
+14 | Ocean Life 2 | Dina Garcia | Borrowed
+15 | Ocean Life 5 | Maya Sato | Borrowed
+16 | The Green Garden 2 | Dina Garcia | Returned
+17 | A Long Journey 3 | Sara Chen | Borrowed
+18 | A Long Journey 1 | Amina Brown | Borrowed
+19 | The Lost Key 4 | Leila Ivanov | Returned
+20 | The Old House 2 | Noah Kim | Borrowed
+21 | Number Patterns 5 | Timur Ali | Borrowed
+22 | The Green Garden 3 | Timur Ali | Returned
+23 | Simple Machines 3 | Dina Garcia | Borrowed
+24 | Number Patterns 4 | Dina Garcia | Borrowed
+25 | The Old House 1 | Ethan Smith | Returned
+26 | A World of Stories 3 | Arman Jones | Borrowed
+27 | Number Patterns 2 | Dina Garcia | Borrowed
+28 | The Lost Key 3 | Timur Ali | Returned
+29 | Simple Machines 5 | Dina Garcia | Borrowed
+30 | Space and Stars 2 | Timur Ali | Borrowed

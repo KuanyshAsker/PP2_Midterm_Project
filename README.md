@@ -1,36 +1,33 @@
-# PP2 Midterm Project
+# Library Management System
 
-## Library Management System
+A simple console project using Python basics, functions, loops, classes, text files, regular expressions, `random`, and SQLite.
 
-A console-based Python application for managing books, members, and borrowing records with SQLite.
+## Run
 
-### Run the application
-
-Use Python 3.10 or newer. From the repository folder:
+Use Python 3.10 or newer:
 
 ```bash
 python3 main.py
 ```
 
-The included `project.db` contains demonstration data: 50 books, 30 members, and 30 borrowings. On a new database, the application creates the tables and loads the demo dataset automatically.
+The app creates `project.db` and adds a demo dataset on first run: 50 books, 30 members, and 30 borrowings. Choose a menu option to add, display, search, update, or delete records, view basic statistics, and save `results.txt`.
 
-### Features
+## Course concepts
 
-- Add and display books, members, and borrowings
-- Search books by title and members by name or ID
-- Show available books
-- Update or delete a book; cancel or return a borrowing
-- Calculate borrowing totals, active loans, and the most frequently borrowed book
-- Export a report to `results.csv`
-- Input validation using regular expressions and repeatable sample data using `random`
+- `Book` and `Member` classes hold and display records.
+- Functions and a `while` loop run the menu and database actions.
+- SQLite stores books, members, and borrowings in three related tables.
+- Regular expressions check member email addresses.
+- `random` selects demo books and members for borrowing records.
+- Export uses basic text-file writing.
 
-### Project files
+## Files
 
-- `main.py` - application source code
-- `project.db` - SQLite database with the minimum dataset
-- `results.csv` - exported summary and borrowing details
-- `ProjectReport.pdf` - project report
-- `ProjectPresentation.pptx` - defense presentation
-- `GroupID_LibraryManagement.zip` - all submission files in one archive
+- `main.py` - the application
+- `project.db` - demo database
+- `results.txt` - exported results
+- `ProjectReport.pdf` - 3-page report
+- `ProjectPresentation.pptx` - 5-slide defense presentation
+- `GroupID_LibraryManagement.zip` - submission archive
 
-The report and presentation contain placeholders for the three team members and their contributions. Replace them before final submission. Rename the ZIP using the actual group ID.
+Add your three team members' names and actual contributions to the report and slides. Rename the ZIP using your group ID before submitting.
