@@ -10,7 +10,7 @@ Use Python 3.10 or newer:
 python3 main.py
 ```
 
-The app creates `project.db` and adds a demo dataset on first run: 50 books, 60 members, and 100 borrowing records. The sample history includes 25 active loans and repeated borrowing of popular books. The code uses simple functions, loops, and SQL statements. Choose a menu option to add, display, search, update, or cancel records, view basic statistics, and save `results.txt`.
+The app creates `project.db` and adds a demo dataset on first run: 50 books, 40 members, and 30 borrowing records. The sample history includes 12 active loans and repeated borrowing of popular books. The code uses simple functions, loops, and SQL statements. Choose a menu option to add, display, search, update, or cancel records, view basic statistics, and save `results.txt`.
 
 ## Course concepts
 

@@ -105,10 +105,6 @@ def add_sample_data(connection):
         "Nurlan Aitbay", "Raushan Kenzhe", "Rustem Bayazit", "Samal Altynbek", "Sanjar Malikov",
         "Sholpan Kadir", "Sultan Zhanibek", "Tamara Ospan", "Timur Kairbek", "Tomiris Mukan",
         "Ulan Nurtay", "Yerlan Akhmet", "Zhanar Mukhtar", "Zhanibek Saken", "Zhibek Aman",
-        "Adil Dosan", "Aigerim Baur", "Aslan Toleu", "Dana Murat", "Daniyar Yessim",
-        "Gulnaz Serik", "Marat Baimbet", "Nazerke Oral", "Olzhas Talgat", "Ramilya Daulet",
-        "Saltanat Zharas", "Zarina Kudaibergen", "Zhasulan Kuandyk", "Akmaral Tursun", "Asem Tanat",
-        "Bekzat Omar", "Damir Tulegen", "Aizhan Yerlan", "Arman Kenzhe", "Madina Oraz",
     ]
     programs = ["Computer Science", "Mathematics", "Engineering", "Economics", "Languages"]
 
@@ -120,13 +116,13 @@ def add_sample_data(connection):
         program = programs[i % len(programs)]
         cursor.execute("INSERT INTO members (name, email, program) VALUES (?, ?, ?)", (names[i], email, program))
 
-    loan_counts = [14, 11, 9, 8, 6, 5, 4, 4, 3, 3, 3] + [2] * 10 + [1] * 10
+    loan_counts = [8, 5, 4, 3, 2, 2] + [1] * 6
     for book_number in range(len(loan_counts)):
         book_id = book_number + 1
         for copy_number in range(loan_counts[book_number]):
             member_id = random.randint(1, len(names))
             returned = 1
-            if book_number < 25 and copy_number == loan_counts[book_number] - 1:
+            if book_number < 12 and copy_number == loan_counts[book_number] - 1:
                 returned = 0
                 cursor.execute("UPDATE books SET available=0 WHERE book_id=?", (book_id,))
             cursor.execute("INSERT INTO borrowings (book_id, member_id, returned) VALUES (?, ?, ?)", (book_id, member_id, returned))
@@ -343,7 +339,7 @@ def main():
     connection.execute("PRAGMA foreign_keys = ON")
     create_tables(connection)
     add_sample_data(connection)
-    print("Library ready: 50 books, 60 members, and 100 borrowing records.")
+    print("Library ready: 50 books, 40 members, and 30 borrowing records.")
     while True:
         show_menu()
         choice = input("Choose an option: ")
