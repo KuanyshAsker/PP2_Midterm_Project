@@ -1,38 +1,108 @@
-LIBRARY MANAGEMENT SYSTEM
+UNIVERSITY LIBRARY SUMMARY
 Books: 50
-Members: 30
-Borrowing records: 30
-Books currently borrowed: 20
-Most borrowed book: A Long Journey 1 (1)
+Members: 60
+Borrowing records: 100
+Current loans: 25
+Most borrowed book: Python Crash Course (14 loans)
 
-BORROWINGS
-1 | A Long Journey 4 | Amina Brown | Returned
-2 | Simple Machines 1 | Daniel Patel | Borrowed
-3 | A World of Stories 4 | Ethan Smith | Borrowed
-4 | A Long Journey 2 | Maya Sato | Returned
-5 | The Green Garden 1 | Daniel Patel | Borrowed
-6 | Python Basics 1 | Maya Sato | Borrowed
-7 | Number Patterns 1 | Noah Kim | Returned
-8 | The Green Garden 5 | Sara Chen | Borrowed
-9 | Ocean Life 4 | Ethan Smith | Borrowed
-10 | Python Basics 4 | Sara Chen | Returned
-11 | Space and Stars 3 | Arman Jones | Borrowed
-12 | Python Basics 3 | Timur Ali | Borrowed
-13 | A World of Stories 1 | Ethan Smith | Returned
-14 | Ocean Life 2 | Dina Garcia | Borrowed
-15 | Ocean Life 5 | Maya Sato | Borrowed
-16 | The Green Garden 2 | Dina Garcia | Returned
-17 | A Long Journey 3 | Sara Chen | Borrowed
-18 | A Long Journey 1 | Amina Brown | Borrowed
-19 | The Lost Key 4 | Leila Ivanov | Returned
-20 | The Old House 2 | Noah Kim | Borrowed
-21 | Number Patterns 5 | Timur Ali | Borrowed
-22 | The Green Garden 3 | Timur Ali | Returned
-23 | Simple Machines 3 | Dina Garcia | Borrowed
-24 | Number Patterns 4 | Dina Garcia | Borrowed
-25 | The Old House 1 | Ethan Smith | Returned
-26 | A World of Stories 3 | Arman Jones | Borrowed
-27 | Number Patterns 2 | Dina Garcia | Borrowed
-28 | The Lost Key 3 | Timur Ali | Returned
-29 | Simple Machines 5 | Dina Garcia | Borrowed
-30 | Space and Stars 2 | Timur Ali | Borrowed
+BORROWING HISTORY
+88 | The C Programming Language | Daniyar Yessim | 2026-10-16 | due 2026-10-30 | Not returned
+93 | Pride and Prejudice | Ramilya Daulet | 2026-10-16 | due 2026-10-30 | Not returned
+14 | Python Crash Course | Adil Dosan | 2026-10-15 | due 2026-10-29 | Not returned
+74 | Code Complete | Zhanar Mukhtar | 2026-10-15 | due 2026-10-29 | Not returned
+92 | 1984 | Ramilya Daulet | 2026-10-15 | due 2026-10-29 | Not returned
+42 | Fluent Python | Dana Murat | 2026-10-14 | due 2026-10-28 | Not returned
+25 | Automate the Boring Stuff with Python | Eldar Bek | 2026-10-13 | due 2026-10-27 | Not returned
+64 | Python Tricks | Islam Nurtay | 2026-10-13 | due 2026-10-27 | Not returned
+76 | Design Patterns | Aibek Sarsenov | 2026-10-13 | due 2026-10-27 | Not returned
+91 | Dune | Zhibek Aman | 2026-10-13 | due 2026-10-27 | Not returned
+34 | Think Python | Saltanat Zharas | 2026-10-12 | due 2026-10-26 | Not returned
+57 | Learning Python | Zarina Kudaibergen | 2026-10-12 | due 2026-10-26 | Not returned
+72 | The Pragmatic Programmer | Eldar Bek | 2026-10-12 | due 2026-10-26 | Not returned
+82 | Database System Concepts | Aibek Sarsenov | 2026-10-12 | due 2026-10-26 | Not returned
+86 | The Linux Command Line | Amina Zhaksylyk | 2026-10-12 | due 2026-10-26 | Not returned
+90 | The Hobbit | Gulnaz Serik | 2026-10-12 | due 2026-10-26 | Not returned
+48 | Effective Python | Zarina Kudaibergen | 2026-10-11 | due 2026-10-25 | Not returned
+70 | Clean Code | Zhibek Aman | 2026-10-11 | due 2026-10-25 | Not returned
+67 | Python Cookbook | Timur Kairbek | 2026-10-10 | due 2026-10-24 | Not returned
+61 | Head First Python | Adil Dosan | 2026-10-09 | due 2026-10-23 | Not returned
+78 | Introduction to Algorithms | Dias Kairat | 2026-10-09 | due 2026-10-23 | Not returned
+84 | Computer Networking: A Top-Down Approach | Zhasulan Kuandyk | 2026-10-09 | due 2026-10-23 | Not returned
+53 | Python for Data Analysis | Aruzhan Kassen | 2026-10-08 | due 2026-10-22 | Not returned
+80 | Data Structures and Algorithms in Python | Bakyt Ermek | 2026-10-08 | due 2026-10-22 | Not returned
+94 | The Great Gatsby | Sanjar Malikov | 2026-10-08 | due 2026-10-22 | Not returned
+23 | Automate the Boring Stuff with Python | Ramilya Daulet | 2026-09-26 | due 2026-10-10 | 2026-10-04
+35 | Fluent Python | Kamila Balgabek | 2026-09-25 | due 2026-10-09 | 2026-09-27
+38 | Fluent Python | Adil Dosan | 2026-09-14 | due 2026-09-28 | 2026-09-27
+9 | Python Crash Course | Ulan Nurtay | 2026-09-12 | due 2026-09-26 | 2026-09-16
+27 | Think Python | Gulmira Ibrayeva | 2026-09-11 | due 2026-09-25 | 2026-09-25
+75 | Design Patterns | Timur Kairbek | 2026-08-31 | due 2026-09-14 | 2026-09-10
+4 | Python Crash Course | Gulmira Ibrayeva | 2026-08-30 | due 2026-09-13 | 2026-09-01
+46 | Effective Python | Dana Murat | 2026-08-30 | due 2026-09-13 | 2026-09-04
+89 | The Hobbit | Aida Nurgaliyeva | 2026-08-30 | due 2026-09-13 | 2026-09-08
+24 | Automate the Boring Stuff with Python | Erasyl Tursyn | 2026-08-29 | due 2026-09-12 | 2026-09-08
+13 | Python Crash Course | Tomiris Mukan | 2026-08-27 | due 2026-09-10 | 2026-09-09
+30 | Think Python | Ulan Nurtay | 2026-08-25 | due 2026-09-08 | 2026-08-31
+17 | Automate the Boring Stuff with Python | Zhanibek Saken | 2026-08-22 | due 2026-09-05 | 2026-09-03
+32 | Think Python | Islam Nurtay | 2026-08-15 | due 2026-08-29 | 2026-08-22
+71 | The Pragmatic Programmer | Madina Serik | 2026-08-14 | due 2026-08-28 | 2026-08-28
+83 | Computer Networking: A Top-Down Approach | Farida Omarova | 2026-08-11 | due 2026-08-25 | 2026-08-13
+28 | Think Python | Gulmira Ibrayeva | 2026-08-09 | due 2026-08-23 | 2026-08-22
+10 | Python Crash Course | Zhasulan Kuandyk | 2026-08-08 | due 2026-08-22 | 2026-08-12
+12 | Python Crash Course | Zarina Kudaibergen | 2026-08-05 | due 2026-08-19 | 2026-08-12
+95 | To Kill a Mockingbird | Zhasulan Kuandyk | 2026-08-02 | due 2026-08-16 | 2026-08-14
+55 | Learning Python | Erasyl Tursyn | 2026-08-01 | due 2026-08-15 | 2026-08-11
+63 | Python Tricks | Eldar Bek | 2026-07-31 | due 2026-08-14 | 2026-08-09
+6 | Python Crash Course | Raushan Kenzhe | 2026-07-25 | due 2026-08-08 | 2026-08-04
+45 | Effective Python | Dinara Saparova | 2026-07-25 | due 2026-08-08 | 2026-07-29
+37 | Fluent Python | Sanjar Malikov | 2026-07-20 | due 2026-08-03 | 2026-07-29
+31 | Think Python | Aslan Toleu | 2026-07-11 | due 2026-07-25 | 2026-07-18
+39 | Fluent Python | Dinara Saparova | 2026-07-10 | due 2026-07-24 | 2026-07-16
+51 | Python for Data Analysis | Daniyar Yessim | 2026-07-10 | due 2026-07-24 | 2026-07-16
+49 | Python for Data Analysis | Zarina Kudaibergen | 2026-07-09 | due 2026-07-23 | 2026-07-11
+7 | Python Crash Course | Zarina Kudaibergen | 2026-07-08 | due 2026-07-22 | 2026-07-20
+68 | Clean Code | Amina Zhaksylyk | 2026-07-05 | due 2026-07-19 | 2026-07-16
+85 | The Linux Command Line | Kamila Balgabek | 2026-07-05 | due 2026-07-19 | 2026-07-10
+19 | Automate the Boring Stuff with Python | Arman Kenzhe | 2026-07-03 | due 2026-07-17 | 2026-07-05
+36 | Fluent Python | Olzhas Talgat | 2026-06-30 | due 2026-07-14 | 2026-07-02
+21 | Automate the Boring Stuff with Python | Amina Zhaksylyk | 2026-06-29 | due 2026-07-13 | 2026-07-01
+73 | Code Complete | Rustem Bayazit | 2026-06-28 | due 2026-07-12 | 2026-07-07
+100 | Sapiens | Gulmira Ibrayeva | 2026-06-28 | due 2026-07-12 | 2026-07-05
+26 | Think Python | Timur Kairbek | 2026-06-27 | due 2026-07-11 | 2026-06-29
+2 | Python Crash Course | Inkar Alimova | 2026-06-26 | due 2026-07-10 | 2026-07-02
+20 | Automate the Boring Stuff with Python | Rustem Bayazit | 2026-06-24 | due 2026-07-08 | 2026-07-05
+22 | Automate the Boring Stuff with Python | Sholpan Kadir | 2026-06-24 | due 2026-07-08 | 2026-07-05
+5 | Python Crash Course | Erasyl Tursyn | 2026-06-21 | due 2026-07-05 | 2026-07-04
+44 | Effective Python | Zhanar Mukhtar | 2026-06-19 | due 2026-07-03 | 2026-06-23
+8 | Python Crash Course | Asem Tanat | 2026-06-17 | due 2026-07-01 | 2026-06-21
+96 | The Little Prince | Aida Nurgaliyeva | 2026-06-17 | due 2026-07-01 | 2026-07-01
+52 | Python for Data Analysis | Aslan Toleu | 2026-06-16 | due 2026-06-30 | 2026-06-25
+15 | Automate the Boring Stuff with Python | Inkar Alimova | 2026-06-15 | due 2026-06-29 | 2026-06-18
+18 | Automate the Boring Stuff with Python | Zarina Kudaibergen | 2026-06-15 | due 2026-06-29 | 2026-06-25
+60 | Head First Python | Ulan Nurtay | 2026-06-15 | due 2026-06-29 | 2026-06-25
+1 | Python Crash Course | Timur Kairbek | 2026-06-13 | due 2026-06-27 | 2026-06-27
+50 | Python for Data Analysis | Diana Abilova | 2026-06-12 | due 2026-06-26 | 2026-06-15
+97 | Crime and Punishment | Ayan Zhumabay | 2026-06-10 | due 2026-06-24 | 2026-06-12
+79 | Data Structures and Algorithms in Python | Sanjar Malikov | 2026-06-05 | due 2026-06-19 | 2026-06-15
+62 | Python Tricks | Aruzhan Kassen | 2026-06-02 | due 2026-06-16 | 2026-06-16
+16 | Automate the Boring Stuff with Python | Tamara Ospan | 2026-05-29 | due 2026-06-12 | 2026-06-10
+81 | Database System Concepts | Ulan Nurtay | 2026-05-29 | due 2026-06-12 | 2026-06-07
+40 | Fluent Python | Aruzhan Kassen | 2026-05-26 | due 2026-06-09 | 2026-05-28
+43 | Effective Python | Nurlan Aitbay | 2026-05-26 | due 2026-06-09 | 2026-06-08
+58 | Head First Python | Amina Zhaksylyk | 2026-05-26 | due 2026-06-09 | 2026-06-06
+59 | Head First Python | Nurlan Aitbay | 2026-05-26 | due 2026-06-09 | 2026-05-31
+87 | The C Programming Language | Askar Bekturov | 2026-05-18 | due 2026-06-01 | 2026-05-30
+11 | Python Crash Course | Damir Tulegen | 2026-05-14 | due 2026-05-28 | 2026-05-24
+47 | Effective Python | Amina Zhaksylyk | 2026-05-13 | due 2026-05-27 | 2026-05-19
+99 | Atomic Habits | Dinara Saparova | 2026-05-13 | due 2026-05-27 | 2026-05-19
+3 | Python Crash Course | Dias Kairat | 2026-05-12 | due 2026-05-26 | 2026-05-24
+98 | The Alchemist | Nazerke Oral | 2026-05-12 | due 2026-05-26 | 2026-05-14
+54 | Learning Python | Asel Mukan | 2026-05-11 | due 2026-05-25 | 2026-05-23
+77 | Introduction to Algorithms | Yerlan Akhmet | 2026-05-09 | due 2026-05-23 | 2026-05-23
+29 | Think Python | Zhanibek Saken | 2026-05-08 | due 2026-05-22 | 2026-05-18
+69 | Clean Code | Diana Abilova | 2026-05-08 | due 2026-05-22 | 2026-05-13
+41 | Fluent Python | Zhibek Aman | 2026-05-06 | due 2026-05-20 | 2026-05-16
+33 | Think Python | Askar Bekturov | 2026-05-03 | due 2026-05-17 | 2026-05-14
+56 | Learning Python | Farida Omarova | 2026-05-03 | due 2026-05-17 | 2026-05-07
+66 | Python Cookbook | Nazerke Oral | 2026-05-03 | due 2026-05-17 | 2026-05-14
+65 | Python Cookbook | Madina Serik | 2026-04-27 | due 2026-05-11 | 2026-04-29
