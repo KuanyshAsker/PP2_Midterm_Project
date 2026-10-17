@@ -1,0 +1,38 @@
+LIBRARY MANAGEMENT SYSTEM SUMMARY
+Books,50
+Members,30
+Total borrowings,30
+Active borrowings,20
+Most borrowed book,A Better Algorithm 2,1
+
+Borrowing ID,Book,Member,Borrowed,Due,Returned
+1,The Quiet Library 1,Amina Brown,2026-09-01,2026-09-15,2026-09-05
+2,The Hidden Garden 1,Arman Kim,2026-09-02,2026-09-16,Not returned
+3,The Copper Key 1,Leila Sato,2026-09-03,2026-09-17,Not returned
+4,A Map of Stars 2,Ethan Patel,2026-09-04,2026-09-18,2026-09-12
+5,A Study of Light 2,Sara Garcia,2026-09-05,2026-09-19,Not returned
+6,A Better Algorithm 2,Timur Ali,2026-09-06,2026-09-20,Not returned
+7,Python in Practice 3,Dina Chen,2026-09-07,2026-09-21,2026-09-18
+8,Across the Steppe 3,Daniel Smith,2026-09-08,2026-09-22,Not returned
+9,River of Time 1,Maya Ivanov,2026-09-09,2026-09-23,Not returned
+10,Stories of Tomorrow 1,Noah Jones,2026-09-10,2026-09-24,2026-09-21
+11,The Quiet Library 2,Amina Brown,2026-09-11,2026-09-25,Not returned
+12,The Hidden Garden 2,Arman Kim,2026-09-12,2026-09-26,Not returned
+13,The Copper Key 2,Leila Sato,2026-09-13,2026-09-27,2026-09-26
+14,A Map of Stars 3,Ethan Patel,2026-09-14,2026-09-28,Not returned
+15,A Study of Light 3,Sara Garcia,2026-09-15,2026-09-29,Not returned
+16,Modern Data Systems 1,Timur Ali,2026-09-16,2026-09-30,2026-09-20
+17,The Open Window 1,Dina Chen,2026-09-17,2026-10-01,Not returned
+18,The Long Journey 1,Daniel Smith,2026-09-18,2026-10-02,Not returned
+19,River of Time 2,Maya Ivanov,2026-09-19,2026-10-03,2026-09-25
+20,Stories of Tomorrow 2,Noah Jones,2026-09-20,2026-10-04,Not returned
+21,The Quiet Library 3,Amina Brown,2026-09-21,2026-10-05,Not returned
+22,The Hidden Garden 3,Arman Kim,2026-09-22,2026-10-06,2026-10-04
+23,City of Paper 1,Leila Sato,2026-09-23,2026-10-07,Not returned
+24,Small Worlds 1,Ethan Patel,2026-09-24,2026-10-08,Not returned
+25,Notes from Earth 1,Sara Garcia,2026-09-25,2026-10-09,2026-10-07
+26,Modern Data Systems 2,Timur Ali,2026-09-26,2026-10-10,Not returned
+27,The Open Window 2,Dina Chen,2026-09-27,2026-10-11,Not returned
+28,The Long Journey 2,Daniel Smith,2026-09-28,2026-10-12,2026-10-09
+29,River of Time 3,Maya Ivanov,2026-09-29,2026-10-13,Not returned
+30,The Last Archive 1,Noah Jones,2026-09-30,2026-10-14,Not returned
