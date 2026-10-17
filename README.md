@@ -10,7 +10,7 @@ Install the pandas dependency first:
 python3 -m pip install -r requirements.txt
 ```
 
-Use Python 3.10 or newer:
+Use Python 3.9 or newer:
 
 ```bash
 python3 main.py
