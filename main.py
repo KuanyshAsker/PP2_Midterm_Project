@@ -1,3 +1,4 @@
+import pandas
 import random
 import re
 import sqlite3
@@ -14,25 +15,12 @@ class Book:
         self.genre = genre
         self.available = available
 
-    def show(self):
-        status = "Yes" if self.available == 1 else "No"
-        print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
-            self.book_id, self.title, self.author, self.genre, status
-        ))
-
-
 class Member:
     def __init__(self, member_id, name, email, program):
         self.member_id = member_id
         self.name = name
         self.email = email
         self.program = program
-
-    def show(self):
-        print("{:<4} | {:<25} | {:<42} | {:<22}".format(
-            self.member_id, self.name, self.email, self.program
-        ))
-
 
 def create_tables(connection):
     cursor = connection.cursor()
@@ -161,40 +149,68 @@ def add_member(connection):
     print("Member added.")
 
 
-def display_books(connection):
-    print("\nBOOKS")
-    print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
-        "ID", "TITLE", "AUTHOR", "GENRE", "AVAILABLE"
-    ))
-    print("-" * 122)
-    rows = connection.execute("SELECT book_id, title, author, genre, available FROM books")
+def show_book_table(rows):
+    books = []
     for row in rows:
         book = Book(row[0], row[1], row[2], row[3], row[4])
-        book.show()
+        status = "Yes" if book.available == 1 else "No"
+        books.append({
+            "ID": book.book_id,
+            "Title": book.title,
+            "Author": book.author,
+            "Genre": book.genre,
+            "Available": status,
+        })
+    if len(books) == 0:
+        print("No books found.")
+    else:
+        print(pandas.DataFrame(books).to_string(index=False))
+
+
+def show_member_table(rows):
+    members = []
+    for row in rows:
+        member = Member(row[0], row[1], row[2], row[3])
+        members.append({
+            "ID": member.member_id,
+            "Name": member.name,
+            "Email": member.email,
+            "Program": member.program,
+        })
+    if len(members) == 0:
+        print("No members found.")
+    else:
+        print(pandas.DataFrame(members).to_string(index=False))
+
+
+def display_books(connection):
+    print("\nBOOKS")
+    rows = connection.execute("SELECT book_id, title, author, genre, available FROM books").fetchall()
+    show_book_table(rows)
 
 
 def display_members(connection):
     print("\nMEMBERS")
-    print("{:<4} | {:<25} | {:<42} | {:<22}".format(
-        "ID", "NAME", "EMAIL", "PROGRAM"
-    ))
-    print("-" * 105)
-    rows = connection.execute("SELECT member_id, name, email, program FROM members")
-    for row in rows:
-        member = Member(row[0], row[1], row[2], row[3])
-        member.show()
+    rows = connection.execute("SELECT member_id, name, email, program FROM members").fetchall()
+    show_member_table(rows)
 
 
 def display_borrowings(connection):
     print("\nBORROWINGS")
-    print("{:<4} | {:<9} | {:<10} | {:<10}".format(
-        "ID", "BOOK ID", "MEMBER ID", "STATUS"
-    ))
-    print("-" * 43)
-    rows = connection.execute("SELECT borrowing_id, book_id, member_id, returned FROM borrowings")
+    rows = connection.execute("SELECT borrowing_id, book_id, member_id, returned FROM borrowings").fetchall()
+    records = []
     for row in rows:
         status = "Returned" if row[3] == 1 else "Borrowed"
-        print("{:<4} | {:<9} | {:<10} | {:<10}".format(row[0], row[1], row[2], status))
+        records.append({
+            "Borrowing ID": row[0],
+            "Book ID": row[1],
+            "Member ID": row[2],
+            "Status": status,
+        })
+    if len(records) == 0:
+        print("No borrowing records found.")
+    else:
+        print(pandas.DataFrame(records).to_string(index=False))
 
 
 def display_records(connection):
@@ -218,32 +234,14 @@ def search_records(connection):
     choice = input("Choose search: ")
     if choice == "1":
         title = input("Enter part of the title: ")
+        rows = connection.execute("SELECT book_id, title, author, genre, available FROM books WHERE title LIKE ?", ("%" + title + "%",)).fetchall()
         print("\nSEARCH RESULTS: BOOKS")
-        print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
-            "ID", "TITLE", "AUTHOR", "GENRE", "AVAILABLE"
-        ))
-        print("-" * 122)
-        rows = connection.execute("SELECT book_id, title, author, genre, available FROM books WHERE title LIKE ?", ("%" + title + "%",))
-        found = False
-        for row in rows:
-            Book(row[0], row[1], row[2], row[3], row[4]).show()
-            found = True
-        if found == False:
-            print("No books found.")
+        show_book_table(rows)
     elif choice == "2":
         name = input("Enter a name or member ID: ")
+        rows = connection.execute("SELECT member_id, name, email, program FROM members WHERE name LIKE ? OR member_id=?", ("%" + name + "%", name)).fetchall()
         print("\nSEARCH RESULTS: MEMBERS")
-        print("{:<4} | {:<25} | {:<42} | {:<22}".format(
-            "ID", "NAME", "EMAIL", "PROGRAM"
-        ))
-        print("-" * 105)
-        rows = connection.execute("SELECT member_id, name, email, program FROM members WHERE name LIKE ? OR member_id=?", ("%" + name + "%", name))
-        found = False
-        for row in rows:
-            Member(row[0], row[1], row[2], row[3]).show()
-            found = True
-        if found == False:
-            print("No members found.")
+        show_member_table(rows)
     else:
         print("Invalid choice.")
 

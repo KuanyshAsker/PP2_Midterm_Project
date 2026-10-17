@@ -4,6 +4,12 @@ A simple console project using the Python concepts from the six lectures: variab
 
 ## Run
 
+Install the pandas dependency first:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
 Use Python 3.10 or newer:
 
 ```bash
@@ -19,11 +25,13 @@ The app creates `project.db` and adds a demo dataset on first run: 50 books, 40 
 - SQLite stores books, members, and borrowings in three related tables.
 - Regular expressions check member email addresses.
 - `random` selects demo members for borrowing records.
+- Pandas displays books, members, borrowings, and search results in tables.
 - Export uses basic text-file writing.
 
 ## Files
 
 - `main.py` - the application
+- `requirements.txt` - the pandas dependency
 - `project.db` - demo database
 - `results.txt` - exported results
 - `ProjectReport.pdf` - 3-page report
