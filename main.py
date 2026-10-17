@@ -16,7 +16,9 @@ class Book:
 
     def show(self):
         status = "Yes" if self.available == 1 else "No"
-        print(str(self.book_id) + " | " + self.title + " | " + self.author + " | " + self.genre + " | Available: " + status)
+        print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
+            self.book_id, self.title, self.author, self.genre, status
+        ))
 
 
 class Member:
@@ -27,7 +29,9 @@ class Member:
         self.program = program
 
     def show(self):
-        print(str(self.member_id) + " | " + self.name + " | " + self.email + " | " + self.program)
+        print("{:<4} | {:<25} | {:<42} | {:<22}".format(
+            self.member_id, self.name, self.email, self.program
+        ))
 
 
 def create_tables(connection):
@@ -158,6 +162,11 @@ def add_member(connection):
 
 
 def display_books(connection):
+    print("\nBOOKS")
+    print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
+        "ID", "TITLE", "AUTHOR", "GENRE", "AVAILABLE"
+    ))
+    print("-" * 122)
     rows = connection.execute("SELECT book_id, title, author, genre, available FROM books")
     for row in rows:
         book = Book(row[0], row[1], row[2], row[3], row[4])
@@ -165,6 +174,11 @@ def display_books(connection):
 
 
 def display_members(connection):
+    print("\nMEMBERS")
+    print("{:<4} | {:<25} | {:<42} | {:<22}".format(
+        "ID", "NAME", "EMAIL", "PROGRAM"
+    ))
+    print("-" * 105)
     rows = connection.execute("SELECT member_id, name, email, program FROM members")
     for row in rows:
         member = Member(row[0], row[1], row[2], row[3])
@@ -172,10 +186,15 @@ def display_members(connection):
 
 
 def display_borrowings(connection):
+    print("\nBORROWINGS")
+    print("{:<4} | {:<9} | {:<10} | {:<10}".format(
+        "ID", "BOOK ID", "MEMBER ID", "STATUS"
+    ))
+    print("-" * 43)
     rows = connection.execute("SELECT borrowing_id, book_id, member_id, returned FROM borrowings")
     for row in rows:
         status = "Returned" if row[3] == 1 else "Borrowed"
-        print(str(row[0]) + " | Book ID: " + str(row[1]) + " | Member ID: " + str(row[2]) + " | " + status)
+        print("{:<4} | {:<9} | {:<10} | {:<10}".format(row[0], row[1], row[2], status))
 
 
 def display_records(connection):
@@ -199,6 +218,11 @@ def search_records(connection):
     choice = input("Choose search: ")
     if choice == "1":
         title = input("Enter part of the title: ")
+        print("\nSEARCH RESULTS: BOOKS")
+        print("{:<4} | {:<42} | {:<34} | {:<20} | {:<9}".format(
+            "ID", "TITLE", "AUTHOR", "GENRE", "AVAILABLE"
+        ))
+        print("-" * 122)
         rows = connection.execute("SELECT book_id, title, author, genre, available FROM books WHERE title LIKE ?", ("%" + title + "%",))
         found = False
         for row in rows:
@@ -208,6 +232,11 @@ def search_records(connection):
             print("No books found.")
     elif choice == "2":
         name = input("Enter a name or member ID: ")
+        print("\nSEARCH RESULTS: MEMBERS")
+        print("{:<4} | {:<25} | {:<42} | {:<22}".format(
+            "ID", "NAME", "EMAIL", "PROGRAM"
+        ))
+        print("-" * 105)
         rows = connection.execute("SELECT member_id, name, email, program FROM members WHERE name LIKE ? OR member_id=?", ("%" + name + "%", name))
         found = False
         for row in rows:
