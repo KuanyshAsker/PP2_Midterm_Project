@@ -1,33 +1,26 @@
 # Library Management System
 
-A simple console project using the Python concepts from the six lectures: variables, conditions, loops, functions, classes, text files, regular expressions, `random`, and SQLite.
+This is a console program for managing a small university library.
 
-## Run
+## Running the program
 
-Use Python 3.9 or newer:
+Open a terminal in this folder and run:
 
 ```bash
 python3 main.py
 ```
 
-The app creates `project.db` and adds a demo dataset on first run: 50 books, 40 members, and 30 borrowing records. The sample history includes 12 active loans and repeated borrowing of popular books. The code uses simple functions, loops, and SQL statements. Choose a menu option to add, display, search, update, or cancel records, view basic statistics, and save `results.txt`.
+When the program starts for the first time, it creates `project.db` and adds sample records. The sample database contains 50 books, 40 members, and 30 borrowing records.
 
-## Course concepts
+## Using the menu
 
-- `Book` and `Member` classes hold and display records.
-- Functions and a `while` loop run the menu and database actions.
-- SQLite stores books, members, and borrowings in three related tables.
-- Regular expressions check member email addresses.
-- `random` selects demo members for borrowing records.
-- Export uses basic text-file writing.
+The menu lets you add books and members, borrow or return books, display records, search books or members, update a book, and cancel a borrowing. Choose option 9 to see the borrowing statistics. Choose option 10 to save a summary to `results.txt`.
 
-## Files
+The sample data has 12 active loans. *Python Crash Course* is the most borrowed book, with 8 loans.
 
-- `main.py` - the application
-- `project.db` - demo database
-- `results.txt` - exported results
-- `ProjectReport.pdf` - 3-page report
-- `ProjectPresentation.pptx` - 5-slide defense presentation
-- `GroupID_LibraryManagement.zip` - submission archive
+## Project files
 
-Add your three team members' names and actual contributions to the report and slides. Rename the ZIP using your group ID before submitting.
+- `main.py` runs the program.
+- `project.db` contains the library data.
+- `results.txt` contains an exported summary and borrowing list.
+- `ProjectReport.pdf` and `ProjectPresentation.pptx` are the project report and presentation.
